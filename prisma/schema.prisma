@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  pastOrders Orders[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Receipts Receipts[]
+}
+
+model Products {
+  id        String   @id @default(cuid())
+  name      String
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Orders Orders[]
+}
+
+model Orders {
+  id        String   @id @default(cuid())
+  userId    String
+  user      Users    @relation(fields: [userId], references: [id])
+  productId String
+  product   Products @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Receipts Receipts[]
+}
+
+model Discounts {
+  id        String   @id @default(cuid())
+  name      String
+  discount  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Receipts {
+  id        String   @id @default(cuid())
+  userId    String
+  user      Users    @relation(fields: [userId], references: [id])
+  orderId   String
+  order     Orders   @relation(fields: [orderId], references: [id])
+  orderDate DateTime
+  refunded  Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
