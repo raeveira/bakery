@@ -1,17 +1,18 @@
 import {auth} from "@/lib/auth"
-import {Button} from "@/components/ui/button";
-import {logout} from "@/app/actions";
+import NavMenu from "@/components/NavMenu";
+import React from "react";
 
 export default async function Page() {
 
     const session = await auth();
 
     return (
-        <div>
-            <h1>Home</h1>
-            <p>Welcome to the home page!</p>
-            {JSON.stringify(session)}
-            <Button variant={'link'} onClick={logout}>Sign out</Button>
-        </div>
+        <>
+            <NavMenu/>
+            <main className="flex-grow container mx-auto px-4 py-8">
+                {JSON.stringify(session)}
+            </main>
+        </>
+
     );
 }

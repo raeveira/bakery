@@ -11,40 +11,35 @@ export async function doCredentialLogin(formData: { get: (arg0: string) => any; 
             password: formData.get('password'),
             redirect: false
         });
-        return { success: true, data: response };
+        return {success: true, data: response};
     } catch (err: unknown) {
-        return { success: false, error: err instanceof Error ? err.message : "An unknown error occurred" };
+        return {success: false, error: err instanceof Error ? err.message : "An unknown error occurred"};
     }
 }
 
 export async function logout() {
-    await signOut({redirectTo: '/'});
+    await signOut({redirectTo: "/logout"});
 }
 
 export async function doCredentialRegister(formData: { get: (arg0: string) => any; }) {
     try {
-        if(!formData){
-            return { success: false, error: "No form data provided" };
+        if (!formData) {
+            return {success: false, error: "No form data provided"};
         }
 
         const hashedPassword = await saltAndHashPassword(formData.get('password'));
-        console.log("Hashed Password", hashedPassword)
         const registeredUser = await insertUserDB(formData.get('email'), formData.get('name'), hashedPassword);
-        if(registeredUser){
+        if (registeredUser) {
             const response = await signIn('credentials', {
                 email: formData.get('email'),
                 password: formData.get('password'),
                 redirect: false
             });
-        return { success: true, data: response };
+            return {success: true, data: response};
         } else {
-            return { success: false, error: "Failed to register user" };
+            return {success: false, error: "Failed to register user"};
         }
     } catch (err: unknown) {
-        return { success: false, error: err instanceof Error ? err.message : "An unknown error occurred" };
+        return {success: false, error: err instanceof Error ? err.message : "An unknown error occurred"};
     }
-}
-
-export async function doLogout() {
-    await signOut({redirectTo: '/'});
 }

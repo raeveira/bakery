@@ -12,7 +12,6 @@ export default {
             async authorize(credentials) {
                 if (credentials === null) return null;
 
-                console.log("credentials", credentials);
                 try {
                     const parsedCredentials = signInSchema.parse(credentials);
 

@@ -5,7 +5,7 @@ import {
     apiAuthPrefix,
     authRoutes,
     publicRoutes
-} from "@/routes"
+} from "@/lib/routes"
 
 const {auth} = NextAuth(authConfig);
 
@@ -13,7 +13,6 @@ const {auth} = NextAuth(authConfig);
 // @ts-expect-error
 export default auth((req) => {
     const {nextUrl} = req;
-    console.log(req)
     const isLoggedIn = !!req.auth;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -32,7 +31,7 @@ export default auth((req) => {
     }
 
     if (!isLoggedIn && !isPublicRoute) {
-        return Response.redirect(new URL("/login", nextUrl));
+        return Response.redirect(new URL("/", nextUrl));
     }
 
     return null;
