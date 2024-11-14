@@ -16,7 +16,7 @@ const menuItems = [
     {id: 7, name: 'Oatmeal Raisin Cookie', price: 1.50, category: 'cookies'},
     {id: 8, name: 'Whole Wheat Bread', price: 4.50, category: 'bread'},
     {id: 9, name: 'Apple Turnover', price: 3.25, category: 'pastries'},
-    {id: 10, name: 'Macaron', price: 2.00, category: 'cookies'},
+    {id: 10, name: 'Macaroon', price: 2.00, category: 'cookies'},
     {id: 11, name: 'Focaccia', price: 4.00, category: 'bread'},
     {id: 12, name: 'Eclair', price: 3.75, category: 'pastries'},
 ]
