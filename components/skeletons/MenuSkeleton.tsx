@@ -7,9 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function MenuSkeleton() {
     return (
-        <main className="flex-grow container mx-auto px-4 py-8">
-            <Skeleton className="h-12 w-3/4 mx-auto mb-8" />
-
+        <main className="flex-grow container mx-auto px-4 py-8 col-span-3">
             <Tabs defaultValue="all" className="mb-8">
                 <TabsList className="grid w-full grid-cols-4">
                     {[...Array(4)].map((_, index) => (

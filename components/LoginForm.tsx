@@ -18,10 +18,12 @@ import {Input} from "@/components/ui/input"
 import {doCredentialLogin} from "@/app/actions"
 import {useRouter} from "next/navigation"
 import React from "react"
+import {EyeIcon, EyeOffIcon} from "lucide-react";
 
 export default function LoginForm() {
     const router = useRouter()
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
+    const [showPassword, setShowPassword] = React.useState(false)
 
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
@@ -73,15 +75,40 @@ export default function LoginForm() {
                             </FormItem>
                         )}
                     />
-                    <FormField
+                     <FormField
                         control={form.control}
                         name="password"
                         render={({field}) => (
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input type="password" placeholder="Enter your password" {...field} />
+                                    <div className="relative">
+                                        <Input
+                                            type={showPassword ? "text" : "password"}
+                                            placeholder="Enter your password"
+                                            {...field}
+                                        />
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? (
+                                                <EyeOffIcon className="h-4 w-4"/>
+                                            ) : (
+                                                <EyeIcon className="h-4 w-4"/>
+                                            )}
+                                            <span className="sr-only">
+                            {showPassword ? "Hide password" : "Show password"}
+                          </span>
+                                        </Button>
+                                    </div>
                                 </FormControl>
+                                <FormDescription>
+                                    Your password must be at least 8 characters long.
+                                </FormDescription>
                                 <FormMessage/>
                             </FormItem>
                         )}

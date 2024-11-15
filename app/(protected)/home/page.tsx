@@ -10,7 +10,7 @@ export default async function Page() {
         <>
             <NavMenu/>
             <main className="flex-grow container mx-auto px-4 py-8">
-                {JSON.stringify(session)}
+
             </main>
         </>
 

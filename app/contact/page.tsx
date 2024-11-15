@@ -16,8 +16,7 @@ export default function ContactPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        // Here you would typically handle the form submission
-        console.log('Form submitted:', {name, email, message})
+
         // Reset form fields
         setName('')
         setEmail('')
