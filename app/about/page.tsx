@@ -68,7 +68,7 @@ export default function AboutPage() {
                         {name: "Dylan Backes", role: "Co-Founder & Head Baker"},
                         {name: "Vincent Steegh", role: "Co-Founder & Business Manager"},
                         {name: "Mika Schmelling", role: "Pastry Chef"},
-                        {name: "Moaid", role: "Baker"},
+                        {name: "Mouaid Sayem", role: "Baker"},
                     ].map((member, index) => (
                         <Card key={index}>
                             <CardHeader>

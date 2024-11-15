@@ -6,6 +6,10 @@ async function getAllUsers() {
     return prisma.users.findMany();
 }
 
+async function getAllProducts() {
+    return prisma.products.findMany();
+}
+
 async function findUser(email: string) {
     return prisma.users.findUnique({
         where: {
@@ -28,4 +32,4 @@ async function insertUser(email: string, name: string, password: string) {
 
 const db = prisma;
 
-export {getAllUsers, findUser, insertUser, db};
+export {getAllUsers, findUser, insertUser,getAllProducts ,db};

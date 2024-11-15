@@ -1,5 +1,5 @@
-import { findUser } from "@/prisma/prismaClient";
-import { insertUser } from "@/prisma/prismaClient";
+'use server'
+import { findUser,insertUser, getAllProducts } from "@/prisma/prismaClient";
 
 export const getUserFromDb = async (email: string) => {
 
@@ -18,4 +18,12 @@ export const insertUserDB = async (email: string, name: string, password: string
         throw new Error("Email is already taken");
     }
     return await insertUser(email, name, password);
+}
+
+export const getAllProductsDB = async () => {
+    const products = await getAllProducts();
+    if(!products){
+        throw new Error("No products found");
+    }
+    return products;
 }
