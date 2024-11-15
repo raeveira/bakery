@@ -1,11 +1,11 @@
 import Credentials from "next-auth/providers/credentials";
 
-import type { NextAuthConfig} from "next-auth";
+import {CredentialsSignin, NextAuthConfig} from "next-auth";
 import {signInSchema} from "@/lib/zod";
 import {getUserFromDb} from "@/utils/db";
 import bcrypt from "bcryptjs";
 import {ZodError} from "zod";
-
+declare let errorM: string;
 export default {
     providers: [
         Credentials({
@@ -23,18 +23,19 @@ export default {
                         if (isMatch) {
                             return user;
                         } else {
-                            throw new Error("Password is incorrect");
+                            errorM = "Invalid credentials";
+                            return null;
                         }
                     } else {
-                        throw new Error("No user found");
+                         return null;
                     }
                 } catch (error: unknown) {
                     if (error instanceof ZodError) {
-                        throw new Error(error.errors[0].message);
+                        return null
                     } else if (error instanceof Error) {
-                        throw new Error(error.message);
+                        return null
                     } else {
-                        throw new Error("An unknown error occurred");
+                        return null
                     }
                 }
             }

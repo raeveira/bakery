@@ -19,6 +19,7 @@ import {EyeIcon, EyeOffIcon} from "lucide-react"
 import {doCredentialRegister} from "@/app/actions";
 import {useRouter} from "next/navigation"
 import React, {useState} from "react"
+import {ZodError} from "zod";
 
 export default function RegisterForm() {
     const router = useRouter()
@@ -42,7 +43,14 @@ export default function RegisterForm() {
         try {
             const formData = new FormData(event.currentTarget);
 
-            const response = await doCredentialRegister(formData);
+            const validatedData = signUpSchema.parse({
+                name: formData.get('name') as string,
+                email: formData.get('email') as string,
+                password: formData.get('password') as string,
+                confirmPassword: formData.get('confirmPassword') as string,
+            });
+
+            const response = await doCredentialRegister(validatedData);
 
             if (!response.success) {
                 setErrorMessage(response.error ?? "An unknown error occurred");
@@ -50,7 +58,7 @@ export default function RegisterForm() {
                 router.push("/home");
             }
         } catch (err: unknown) {
-            setErrorMessage(err instanceof Error ? err.message : "An unknown error occurred");
+            setErrorMessage(err instanceof ZodError ? JSON.parse(err.message)[0].message  : "An unknown error occurred");
         }
     }
 
