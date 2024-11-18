@@ -17,18 +17,21 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import ShoppingCartDesc from "@/components/ShoppingCartDesc"
+import {Session} from '@auth/core/types'
+import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export default function NavMenu() {
     const router = useRouter()
     const pathname = usePathname()
     const [showLogin, setShowLogin] = useState(false)
     const [showRegister, setShowRegister] = useState(false)
-    const [session, setSession] = useState<any>(null)
+    const [session, setSession] = useState<Session | null>(null)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
     async function fetchSession() {
         const sessionData = await getSessionStatus()
-        setSession(sessionData)
+        if (sessionData) setSession(sessionData)
+        else setSession(null)
     }
 
     useEffect(() => {
@@ -115,8 +118,7 @@ export default function NavMenu() {
     )
 }
 
-function AccountPopover({ session, showLogin, showRegister, setShowLogin, setShowRegister, router }: { session: any, showLogin: boolean, showRegister: boolean, setShowLogin: Function, setShowRegister: Function, router: any }) {
-    return (
+function AccountPopover({ session, showLogin, showRegister, setShowLogin, setShowRegister, router }: { session: Session | null, showLogin: boolean, showRegister: boolean, setShowLogin: (value: boolean) => void, setShowRegister: (value: boolean) => void, router: AppRouterInstance }) {    return (
         <Popover>
             <PopoverTrigger asChild>
                 <Button variant="link"
@@ -132,7 +134,7 @@ function AccountPopover({ session, showLogin, showRegister, setShowLogin, setSho
                         {showRegister && <RegisterForm/>}
                         {session && (
                             <div className="">
-                                Good {new Date().getHours() < 12 ? 'morning' : 'afternoon'}, {session.user.name}!<br/>
+                                Good {new Date().getHours() < 12 ? 'morning' : 'afternoon'}, {session.user?.name}!<br/>
                                 Ready to explore more sweet delights?
                             </div>
                         )}
@@ -154,9 +156,14 @@ function AccountPopover({ session, showLogin, showRegister, setShowLogin, setSho
                         </div>
                         <div className="grid gap-2">
                             {session ? (
+                                <>
+                                    <Button variant="outline" onClick={() => router.push("/settings")}>
+                                        Settings
+                                    </Button>
                                 <Button variant="outline" onClick={() => router.push("/logout")}>
                                     Logout
                                 </Button>
+                                </>
                             ) : (
                                 <>
                                     <Button
