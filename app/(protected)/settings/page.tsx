@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import NavMenu from "@/components/NavMenu"
 import getSessionStatus from "@/app/actions/getSessionStatus"
+import { updateUserDB } from "@/app/actions/updateUser"
+import { checkPassword } from '@/app/actions/checkPassword'
 
 export default function SettingsPage() {
     const [username, setUsername] = useState('')
@@ -17,6 +19,44 @@ export default function SettingsPage() {
         if (sessionData && sessionData.user) {
             setUsername(sessionData.user.name || '')
             setEmail(sessionData.user.email || '')
+        }
+    }
+
+    async function handleSaveChanges() {
+        if (!username && !email) {
+            alert('Please provide either a username or an email to update.')
+            return
+        }
+
+        try {
+            await updateUserDB(username, email)
+            alert('User updated successfully')
+        } catch {
+            alert('Failed to update user')
+        }
+    }
+
+    async function handleChangePassword() {
+        const currentPassword = (document.getElementById('current-password') as HTMLInputElement).value
+        const newPassword = (document.getElementById('new-password') as HTMLInputElement).value
+        const confirmPassword = (document.getElementById('confirm-password') as HTMLInputElement).value
+
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            alert('Please fill in all password fields.')
+            return
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert('New password and confirm password do not match.')
+            return
+        }
+
+        try {
+            await checkPassword(email, currentPassword) // Verify the password
+            await updateUserDB(username, email, newPassword)
+            alert('Password changed successfully')
+        } catch {
+            alert('Failed to change password')
         }
     }
 
@@ -44,7 +84,7 @@ export default function SettingsPage() {
                                         <Label htmlFor="email">Email</Label>
                                         <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                                     </div>
-                                    <Button>Save Changes</Button>
+                                    <Button onClick={handleSaveChanges}>Save Changes</Button>
                                 </div>
                             </CardContent>
                         </Card>
@@ -68,7 +108,7 @@ export default function SettingsPage() {
                                         <Label htmlFor="confirm-password">Confirm New Password</Label>
                                         <Input id="confirm-password" type="password" autoComplete="new-password" />
                                     </div>
-                                    <Button>Change Password</Button>
+                                    <Button onClick={handleChangePassword}>Change Password</Button>
                                 </div>
                             </CardContent>
                         </Card>

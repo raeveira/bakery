@@ -15,10 +15,11 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
-import {doCredentialLogin} from "@/app/actions"
 import {useRouter} from "next/navigation"
 import React from "react"
 import {EyeIcon, EyeOffIcon} from "lucide-react";
+import {encrypt} from "@/app/actions/crypto";
+
 
 export default function LoginForm() {
     const router = useRouter()
@@ -37,13 +38,10 @@ export default function LoginForm() {
         event.preventDefault()
         try {
             const formData = new FormData(event.currentTarget)
-            const response = await doCredentialLogin(formData)
+            const JSONFORM = JSON.stringify(Object.fromEntries(formData))
+            const encryptedFormData = await encrypt(JSONFORM)
+            router.push(`/login?encryptedFormData=${encryptedFormData}`)
 
-            if (!response.success) {
-                setErrorMessage(response.error ?? "An unknown error occurred")
-            } else {
-                router.push("/home")
-            }
         } catch (err: unknown) {
             setErrorMessage(err instanceof Error ? err.message : "An unknown error occurred")
         }

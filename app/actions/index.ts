@@ -3,13 +3,16 @@
 import {signIn, signOut} from '@/lib/auth';
 import {insertUserDB} from '@/utils/db';
 import {saltAndHashPassword} from "@/utils/password";
-import {AuthError, CredentialsSignin} from "next-auth";
-import {signUpSchema} from "@/lib/zod";
+import {AuthError} from "next-auth";
 
-export async function doCredentialLogin(formData: { get: (arg0: string) => any; }) {
+export async function doCredentialLogin(formData: { email: string, password: string }) {
     try {
-        const email = formData.get('email');
-        const password = formData.get('password');
+        console.log("FORM DATA", formData);
+
+        const email = formData.email;
+        const password = formData.password;
+
+        console.log(email, password)
 
         if (!email || !password) {
             return {success: false, error: "Email and password are required"};

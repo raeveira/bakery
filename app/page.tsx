@@ -1,11 +1,20 @@
+'use client'
 import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 import {Cake, Croissant, Cookie} from 'lucide-react'
 import Link from 'next/link'
 import React from "react";
 import NavMenu from "@/components/NavMenu";
+import { useSearchParams } from "next/navigation";
+import {toast} from 'sonner';
 
 export default function Home() {
+    const searchParams = useSearchParams();
+    const loginSuccess = searchParams.get('login') === 'success';
+    if (loginSuccess) {
+        toast.success('Login successful');
+    }
+
     return (
         <>
             <NavMenu/>
