@@ -7,12 +7,9 @@ import {AuthError} from "next-auth";
 
 export async function doCredentialLogin(formData: { email: string, password: string }) {
     try {
-        console.log("FORM DATA", formData);
 
         const email = formData.email;
         const password = formData.password;
-
-        console.log(email, password)
 
         if (!email || !password) {
             return {success: false, error: "Email and password are required"};
