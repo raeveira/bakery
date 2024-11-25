@@ -15,11 +15,8 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             }
 
             if (token.role) {
-                // @ts-ignore
                 session.user.role = token.role;
             }
-
-            console.log("SESSION", session);
 
             return session;
         },
@@ -28,7 +25,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
 
             token.isAdmin = await getRole(token.sub);
             token.role = token.isAdmin ? "admin" : "user";
-            console.log("JWT ROLE", token.isAdmin, token.role);
 
             return token;
         },

@@ -1,8 +1,9 @@
 export type MenuItem = {
-    id?: string
-    name: string
-    price: number
-    category: string
-    createdAt?: Date
-    updatedAt?: Date
+    id?: string,
+    name: string,
+    price: number,
+    image: string,
+    category: string,
+    createdAt?: Date,
+    updatedAt?: Date,
 };

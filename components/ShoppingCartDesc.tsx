@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { Minus, Plus, ShoppingBag, X } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getCartItems } from "@/app/actions/getCartItems"
@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import { CartItem } from "@/lib/types/cartItem"
 import {updateCartItemQuantityDB} from "@/app/actions/updateCartItemQuantity";
 import {removeCartItemDB} from "@/app/actions/removeCartItem";
+import Image from "next/image";
 
 export default function ShoppingCartDesc() {
     const [cartItems, setCartItems] = useState<CartItem[]>([])
@@ -67,10 +68,13 @@ export default function ShoppingCartDesc() {
             <div className="flex-grow space-y-6 overflow-y-auto h-[calc(100vh-16rem)]">
                 {cartItems.length > 0 ? (
                     cartItems.map((item) => (
-                        <div key={item.id} className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center">
-                            <div>
+                        <div key={item.id} className="flex flex-row space-y-4 sm:flex-col sm:justify-between sm:items-center">
+                            <div className={"flex-row flex space-x-2"}>
+                                <Image src={item.product.image} alt={item.product.name} width={100} height={100} className={"rounded-[15px]"} />
+                                <div>
                                 <h3 className="text-lg font-semibold">{item.product.name}</h3>
                                 <p className="text-lg font-semibold">€{item.product.price.toFixed(2)}</p>
+                                </div>
                             </div>
                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                                 <div className="flex items-center gap-2">

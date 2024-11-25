@@ -9,6 +9,8 @@ const AdminPage = async () => {
         redirect("/")
     }
 
+    // flag = GILDE{WEBSITE}
+
     return <AdminDashboard />
 }
 

@@ -4,6 +4,7 @@ export type CartItem = ({
         createdAt: Date
         updatedAt: Date
         name: string
+        image: string
         price: number
         category: string
     }

@@ -32,11 +32,11 @@ model Products {
   id        String   @id @default(cuid())
   name      String
   price     Float
+  image     String   @default("/images/default.jpg")
   category  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Orders Orders[]
+  Orders    Orders[]
 
   cart     Cart[]
   CartItem CartItem[]

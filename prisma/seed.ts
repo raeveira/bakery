@@ -9,6 +9,7 @@ async function main() {
                 name: item.name,
                 price: item.price,
                 category: item.category,
+                image: item.image || 'default-image.jpg',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             }
