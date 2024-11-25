@@ -2,6 +2,7 @@ import Image from 'next/image'
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import NavMenu from "@/components/NavMenu";
 import React from "react";
+import Footer from "@/components/Footer";
 
 export default function AboutPage() {
     return (
@@ -81,6 +82,7 @@ export default function AboutPage() {
                     ))}
                 </div>
             </main>
+            <Footer/>
         </>
     )
 }

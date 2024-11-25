@@ -9,6 +9,7 @@ import NavMenu from "@/components/NavMenu"
 import getSessionStatus from "@/app/actions/getSessionStatus"
 import { updateUserDB } from "@/app/actions/updateUser"
 import { checkPassword } from '@/app/actions/checkPassword'
+import Footer from "@/components/Footer";
 
 export default function SettingsPage() {
     const [username, setUsername] = useState('')
@@ -115,6 +116,7 @@ export default function SettingsPage() {
                     </div>
                 </div>
             </main>
+            <Footer/>
         </>
     )
 }

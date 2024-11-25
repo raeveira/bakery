@@ -7,6 +7,7 @@ import React from "react";
 import NavMenu from "@/components/NavMenu";
 import { useSearchParams } from "next/navigation";
 import {toast} from 'sonner';
+import Footer from "@/components/Footer";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -38,6 +39,7 @@ export default function Home() {
                     </div>
                 </section>
             </main>
+            <Footer/>
         </>
     )
 }

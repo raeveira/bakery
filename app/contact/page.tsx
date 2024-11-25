@@ -8,6 +8,7 @@ import {Label} from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
 import {MapPin, Phone, Mail, Clock} from 'lucide-react'
 import NavMenu from "@/components/NavMenu";
+import Footer from "@/components/Footer";
 
 export default function ContactPage() {
     const [name, setName] = useState('')
@@ -108,6 +109,7 @@ export default function ContactPage() {
                     </div>
                 </div>
             </main>
+            <Footer/>
         </>
     )
 }

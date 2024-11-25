@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import  menuItems from './data'
+import {saltAndHashPassword} from "@/utils/password";
 const prisma = new PrismaClient()
 async function main() {
     for (const item of menuItems) {
@@ -13,6 +14,20 @@ async function main() {
             }
         })
     }
+
+    await prisma.users.create({
+        data: {
+            email: 'admin@gilde.nl',
+            name: 'GILDE{DATABASE}',
+            password: await saltAndHashPassword('p1ZoLJOTIOOytkCazU7J8Q=='),
+            pastOrders: {},
+            cart: {},
+            Receipts: {},
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        }
+    })
+
 }
 main()
     .then(async () => {

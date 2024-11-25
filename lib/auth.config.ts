@@ -1,11 +1,12 @@
 import Credentials from "next-auth/providers/credentials";
 
-import {CredentialsSignin, NextAuthConfig} from "next-auth";
+import {NextAuthConfig} from "next-auth";
 import {signInSchema} from "@/lib/zod";
 import {getUserFromDb} from "@/utils/db";
 import bcrypt from "bcryptjs";
 import {ZodError} from "zod";
-declare let errorM: string;
+import {getRole} from "@/app/actions/getRole";
+
 export default {
     providers: [
         Credentials({
@@ -23,7 +24,6 @@ export default {
                         if (isMatch) {
                             return user;
                         } else {
-                            errorM = "Invalid credentials";
                             return null;
                         }
                     } else {

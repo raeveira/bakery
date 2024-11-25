@@ -27,6 +27,15 @@ export const authRoutes = [
  */
 export const apiAuthPrefix = "/api/auth"
 
+/*
+    * An array of routes that are used for admin purposes
+    * These routes are only accessible to users with the admin role
+    * @type {string[]}
+ */
+export const adminRoutes = [
+    "/admin"
+]
+
 /**
  * The default redirect path after a successful login
  */
