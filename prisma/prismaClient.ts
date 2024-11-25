@@ -1,5 +1,6 @@
 import {PrismaClient} from '@prisma/client'
 import {MenuItem} from "@/lib/types/prismaData";
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -125,7 +126,8 @@ export async function getCartItemsDB(sessionUser: any) {
 export async function updateUser(oldEmail: string, name?: string, email?: string, password?: string) {
     const dataContent: { updatedAt: Date, password?: string, name?: string, email?: string } = { updatedAt: new Date() };
     if (password) {
-        dataContent.password = password;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        dataContent.password = hashedPassword;
     }
     if (name) {
         dataContent.name = name;
