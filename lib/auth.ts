@@ -15,6 +15,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             }
 
             if (token.role) {
+                // @ts-ignore
                 session.user.role = token.role;
             }
 

@@ -12,6 +12,7 @@ import {insertCartDB} from "@/app/actions/insertCart";
 import {toast} from 'sonner';
 import {getCartItems} from "@/app/actions/getCartItems";
 import {CartItem} from "@/lib/types/cartItem";
+import Footer from "@/components/Footer";
 
 export default function MenuPage() {
 
@@ -86,6 +87,7 @@ export default function MenuPage() {
                 )
                 }
             </main>
+            <Footer/>
         </>
     )
 }
