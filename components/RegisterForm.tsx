@@ -20,6 +20,7 @@ import {doCredentialRegister} from "@/app/actions";
 import {useRouter} from "next/navigation"
 import React, {useState} from "react"
 import {ZodError} from "zod";
+import {DEFAULT_LOGIN_REDIRECT} from "@/lib/routes"
 
 export default function RegisterForm() {
     const router = useRouter()
@@ -55,7 +56,7 @@ export default function RegisterForm() {
             if (!response.success) {
                 setErrorMessage(response.error ?? "An unknown error occurred");
             } else {
-                router.push("/home");
+                router.push(DEFAULT_LOGIN_REDIRECT);
             }
         } catch (err: unknown) {
             setErrorMessage(err instanceof ZodError ? JSON.parse(err.message)[0].message  : "An unknown error occurred");

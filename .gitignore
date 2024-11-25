@@ -41,3 +41,4 @@ next-env.d.ts
 /bun.lockb
 /.idea/
 /prisma/database.*
+/prisma/migrations

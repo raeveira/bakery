@@ -54,7 +54,7 @@ export const insertCart = async (product: MenuItem, sessionUser: any) => {
         });
     }
 
-    let cartItem = await prisma.cartItem.findUnique({
+    const cartItem = await prisma.cartItem.findUnique({
         where: {
             cartId_productId: {
                 cartId: cart.id,
@@ -119,6 +119,28 @@ export async function getCartItemsDB(sessionUser: any) {
         include: {
             product: true
         }
+    });
+}
+
+export async function updateUser(oldEmail: string, name?: string, email?: string, password?: string) {
+    const dataContent: { updatedAt: Date, password?: string, name?: string, email?: string } = { updatedAt: new Date() };
+    if (password) {
+        dataContent.password = password;
+    }
+    if (name) {
+        dataContent.name = name;
+    }
+    if (email) {
+        dataContent.email = email;
+    }
+
+    if (!oldEmail || oldEmail === '') {
+        return null;
+    }
+
+    return prisma.users.update({
+        where: { email: oldEmail },
+        data: dataContent,
     });
 }
 
