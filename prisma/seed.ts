@@ -13,6 +13,20 @@ async function main() {
             }
         })
     }
+
+    await prisma.users.create({
+        data: {
+            email: 'GILDE{DATABASE}',
+            name: 'GILDE{DATABASE}',
+            password: 'GILDE{DATABASE}',
+            pastOrders: {},
+            cart: {},
+            Receipts: {},
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        }
+    })
+
 }
 main()
     .then(async () => {
