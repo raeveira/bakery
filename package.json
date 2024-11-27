@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start",
+    "start": "next start > /var/log/nextjs/access.log 2> /var/log/nextjs/error.log &",
     "lint": "next lint",
     "prisma:studio": "prisma studio"
   },
