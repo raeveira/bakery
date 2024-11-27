@@ -3,13 +3,13 @@ import {Button} from "@/components/ui/button"
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 import {Cake, Croissant, Cookie} from 'lucide-react'
 import Link from 'next/link'
-import React from "react";
+import React, { Suspense } from "react";
 import NavMenu from "@/components/NavMenu";
 import { useSearchParams } from "next/navigation";
 import {toast} from 'sonner';
 import Footer from "@/components/Footer";
 
-export default function Home() {
+function HomeContent() {
     const searchParams = useSearchParams();
     const loginSuccess = searchParams.get('login') === 'success';
     if (loginSuccess) {
@@ -42,6 +42,14 @@ export default function Home() {
             <Footer/>
         </>
     )
+}
+
+export default function Home() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <HomeContent />
+        </Suspense>
+    );
 }
 
 function FeaturedProduct({title, icon}: { title: string, icon: React.ReactNode }) {

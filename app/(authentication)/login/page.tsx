@@ -1,13 +1,13 @@
 'use client'
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { doCredentialLogin } from "@/app/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from 'lucide-react';
 import { decrypt } from "@/app/actions/crypto";
 
-export default function LoginPage() {
+function LoginPageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isLoading, setIsLoading] = useState(true);
@@ -24,12 +24,9 @@ export default function LoginPage() {
 
                     const decryptedFormData = await decrypt(loginData);
 
-
                     const parsedFormData = JSON.parse(decryptedFormData);
 
-
                     const loginResponse = await doCredentialLogin(parsedFormData) || { success: false, error: "Unexpected error." };
-
 
                     if (loginResponse.success) {
                         router.push('/');
@@ -37,8 +34,8 @@ export default function LoginPage() {
                         setError(loginResponse.error || "Invalid credentials");
                     }
                 }
-            } catch (err: any) {
-                setError(err.message || "An unexpected error occurred.");
+            } catch (err) {
+                setError((err as Error).message || "An unexpected error occurred.");
             } finally {
                 setIsLoading(false);
             }
@@ -49,7 +46,6 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (error) {
-
             const timer = setTimeout(() => {
                 setError(null);
                 router.push('/');
@@ -83,5 +79,13 @@ export default function LoginPage() {
                 </CardContent>
             </Card>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <LoginPageContent />
+        </Suspense>
     );
 }

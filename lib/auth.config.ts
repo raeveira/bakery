@@ -5,7 +5,6 @@ import {signInSchema} from "@/lib/zod";
 import {getUserFromDb} from "@/utils/db";
 import bcrypt from "bcryptjs";
 import {ZodError} from "zod";
-import {getRole} from "@/app/actions/getRole";
 
 export default {
     providers: [
