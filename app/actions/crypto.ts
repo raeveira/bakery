@@ -9,7 +9,7 @@ const iv = crypto.randomBytes(16);
 
 /**
  * Encrypts text
- * @param text String - text to encrypt
+ * @param {String} text - text to encrypt
  * @promise returns encrypted text
  */
 export async function encrypt(text: string): Promise<string> {
@@ -21,7 +21,7 @@ export async function encrypt(text: string): Promise<string> {
 
 /**
  * Decrypts text
- * @param encryptedText String - text to decrypt
+ * @param {String} encryptedText - text to decrypt
  * @promise returns decrypted text
  */
 export async function decrypt(encryptedText: string): Promise<string> {
