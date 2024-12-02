@@ -20,7 +20,7 @@ async function main() {
         data: {
             id: 'GILDE{DATABASE}',
             email: 'admin@gilde.nl',
-            name: 'Admin',
+            name: 'admin',
             password: '$2a$10$hpG.wM9alm7pkI58I1WTt.JdI7amCh8Q0DHKfVMvl/t6B3CTdlFNy', //p1ZoLJOTIOOytkCazU7J8Q==
             pastOrders: {},
             cart: {},

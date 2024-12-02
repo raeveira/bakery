@@ -7,7 +7,11 @@ const algorithm = 'aes-256-cbc';
 const key = crypto.scryptSync('your-secret-password', 'salt', 32);
 const iv = crypto.randomBytes(16);
 
-// Function to encrypt data
+/**
+ * Encrypts text
+ * @param text String - text to encrypt
+ * @promise returns encrypted text
+ */
 export async function encrypt(text: string): Promise<string> {
     const cipher = crypto.createCipheriv(algorithm, key, iv);
     let encrypted = cipher.update(text, 'utf8', 'hex');
@@ -15,7 +19,11 @@ export async function encrypt(text: string): Promise<string> {
     return `${iv.toString('hex')}:${encrypted}`;
 }
 
-// Function to decrypt data
+/**
+ * Decrypts text
+ * @param encryptedText String - text to decrypt
+ * @promise returns decrypted text
+ */
 export async function decrypt(encryptedText: string): Promise<string> {
     const [ivHex, encrypted] = encryptedText.split(':');
     const decipher = crypto.createDecipheriv(algorithm, key, Buffer.from(ivHex, 'hex'));
