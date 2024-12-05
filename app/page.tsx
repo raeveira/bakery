@@ -8,6 +8,14 @@ import NavMenu from "@/components/NavMenu";
 import { useSearchParams } from "next/navigation";
 import {toast} from 'sonner';
 import Footer from "@/components/Footer";
+import Image from "next/image";
+import {Itim} from 'next/font/google'
+
+const itim = Itim({
+    subsets: ['latin'],
+    weight: "400",
+    display: 'swap'
+})
 
 function HomeContent() {
     const searchParams = useSearchParams();
@@ -20,11 +28,13 @@ function HomeContent() {
         <>
             <NavMenu/>
             <main className="flex-grow">
-                <section className="bg-muted py-20">
-                    <div className="container mx-auto text-center">
+                <section className="bg-muted py-20 relative">
+                    <Image src={'/images/banner.png'} alt={'product banner'} fill={true} className={'object-cover'} />
+                    <div className="absolute inset-0 bg-black bg-opacity-50"/>
+                    <div className="container mx-auto text-center relative z-[1] text-white">
                         <h1 className="text-4xl font-bold mb-4">Welcome to Sweet Delights Bakery</h1>
                         <p className="text-xl mb-8">Indulge in our freshly baked goods made with love</p>
-                        <Button size="lg"><Link href={'/menu'}>Order Now</Link></Button>
+                        <Button size="lg" variant={'secondary'} ><Link href={'/menu'} className={`${itim.className} text-xl`}>View Our Menu</Link></Button>
                     </div>
                 </section>
 
