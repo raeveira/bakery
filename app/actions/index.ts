@@ -62,12 +62,7 @@ export async function doCredentialRegister(validatedData: {
         const hashedPassword = await saltAndHashPassword(validatedData.password);
         const registeredUser = await insertUserDB(validatedData.email, validatedData.name, hashedPassword);
         if (registeredUser) {
-            const response = await signIn('credentials', {
-                email: validatedData.email,
-                password: validatedData.password,
-                redirect: false
-            });
-            return {success: true, data: response};
+            return {success: true};
         } else {
             return {success: false, error: "Failed to register user"};
         }

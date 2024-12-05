@@ -17,13 +17,13 @@ import {
 import {Input} from "@/components/ui/input"
 import {EyeIcon, EyeOffIcon} from "lucide-react"
 import {doCredentialRegister} from "@/app/actions";
-import {useRouter} from "next/navigation"
 import React, {useState} from "react"
-import {ZodError} from "zod";
-import {DEFAULT_LOGIN_REDIRECT} from "@/lib/routes"
+import {ZodError} from "zod"
+import { toast } from 'sonner'
+
 
 export default function RegisterForm() {
-    const router = useRouter()
+
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState(false)
@@ -56,7 +56,9 @@ export default function RegisterForm() {
             if (!response.success) {
                 setErrorMessage(response.error ?? "An unknown error occurred");
             } else {
-                router.push(DEFAULT_LOGIN_REDIRECT);
+                // Display a success message or redirect to a different page
+                setErrorMessage(null);
+                toast.success("Registration successful! Please log in.");
             }
         } catch (err: unknown) {
             setErrorMessage(err instanceof ZodError ? JSON.parse(err.message)[0].message  : "An unknown error occurred");
