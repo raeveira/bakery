@@ -4,9 +4,12 @@ import {signIn, signOut} from '@/lib/auth';
 import {insertUserDB} from '@/utils/db';
 import {saltAndHashPassword} from "@/utils/password";
 import {AuthError} from "next-auth";
+import {RateLimit} from "@/app/actions/rateLimit";
 
 export async function doCredentialLogin(formData: { email: string, password: string }) {
     try {
+
+        await RateLimit.checkRateLimit();
 
         const email = formData.email;
         const password = formData.password;
@@ -50,6 +53,8 @@ export async function doCredentialRegister(validatedData: {
     confirmPassword: string;
 }) {
     try {
+        await RateLimit.checkRateLimit();
+
         if (!validatedData) {
             return {success: false, error: "No form data provided"};
         }
