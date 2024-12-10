@@ -8,37 +8,38 @@ import {RateLimit} from "@/app/actions/rateLimit";
 
 export async function doCredentialLogin(formData: { email: string, password: string }) {
     try {
-
         await RateLimit.checkRateLimit();
 
         const email = formData.email;
         const password = formData.password;
 
         if (!email || !password) {
-            return {success: false, error: "Email and password are required"};
+            return { success: false, error: "Email and password are required" };
         }
 
-        await signIn('credentials', {
+        const signInResponse = await signIn('credentials', {
             email: email,
             password: password,
             redirect: false
         });
 
-        return {success: true};
-    } catch (err: unknown) {
+        if (signInResponse?.requires2FA) {
+            // Handle 2FA logic here
+            return { success: true, requires2FA: true };
+        }
 
-        // Check if the error is of type CredentialsSignin
+        return { success: true };
+    } catch (err: unknown) {
         if (err instanceof AuthError) {
             switch (err.type) {
                 case "CredentialsSignin":
-                    return {success: false, error: "Invalid credentials"};
+                    return { success: false, error: "Invalid credentials" };
                 default:
-                    return {success: false, error: "An unknown error occurred"};
+                    return { success: false, error: "An unknown error occurred" };
             }
         }
 
-        // Return generic error message if it's another error
-        return {success: false, error: err instanceof Error ? err.message : "An unknown error occurred"};
+        return { success: false, error: err instanceof Error ? err.message : "An unknown error occurred" };
     }
 }
 

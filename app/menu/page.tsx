@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,11 +12,24 @@ import MenuSkeleton from "@/components/skeletons/MenuSkeleton"
 import { insertCartDB } from "@/app/actions/insertCart"
 import { toast } from 'sonner'
 import Footer from "@/components/Footer";
+import getSessionStatus from "@/app/actions/getSessionStatus"
+import {Session} from "@auth/core/types";
 
 export default function MenuPage() {
     const [activeCategory, setActiveCategory] = useState('all')
     const [menuItems, setMenuItems] = useState<MenuItem[]>([])
     const [categories, setCategories] = useState<string[]>([])
+    const [session, setSession] = useState<Session | null>(null)
+
+    async function fetchSession() {
+        const sessionData = await getSessionStatus()
+        if (sessionData) setSession(sessionData)
+        else setSession(null)
+    }
+
+    useEffect(() => {
+        fetchSession().then()
+    }, [])
 
     const filteredItems = activeCategory === 'all'
         ? menuItems
@@ -85,7 +98,8 @@ export default function MenuPage() {
                                         <p className="text-2xl font-bold">€{item.price.toFixed(2)}</p>
                                     </CardContent>
                                     <CardFooter>
-                                        <Button className="w-full" onClick={() => addToCart(item)}>Add to Cart</Button>
+                                        {session && <Button className="w-full" onClick={() => addToCart(item)}>Add to Cart</Button>}
+
                                     </CardFooter>
                                 </Card>
                             ))}
