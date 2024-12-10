@@ -1,10 +1,10 @@
 'use server'
 import * as crypto from 'crypto';
+import 'dotenv/config'
 
 const algorithm = 'aes-256-cbc';
-//TODO: Add secret key to .env file
 
-const key = crypto.scryptSync('your-secret-password', 'salt', 32);
+const key = crypto.scryptSync(process.env.CRYPTO_KEY, 'salt', 32);
 const iv = crypto.randomBytes(16);
 
 /**
