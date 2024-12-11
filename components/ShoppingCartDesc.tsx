@@ -16,12 +16,14 @@ export default function ShoppingCartDesc() {
 
     const updateCart = async () => {
         const response = await getCartItems()
-        if (response === null) {
-            toast.error('An error occurred while fetching cart items')
-        } else if ('error' in response) {
-            toast.error(response.error)
-        } else {
-            setCartItems(response)
+        if(response) {
+            if ('error' in response) {
+                toast.error(response.error)
+            } else if (Array.isArray(response) && response.length === 0) {
+                setCartItems([])
+            } else {
+                setCartItems(response)
+            }
         }
     }
 
@@ -30,19 +32,25 @@ export default function ShoppingCartDesc() {
     }, [])
 
     const onUpdateQuantity = async (id: string, quantity: number) => {
+        const maxQuantity = 40;
+        if (quantity > maxQuantity) {
+            toast.error(`You cannot have more than ${maxQuantity} of this item in your cart`);
+            return;
+        }
+
         setCartItems(prevItems =>
             prevItems.map(item =>
-                item.id === id ? {...item, quantity} : item
+                item.id === id ? { ...item, quantity } : item
             )
-        )
-        const response = await updateCartItemQuantityDB(id, quantity)
-        if ('error' in response) {
-            toast.error(response.error)
-        } else {
-            toast.success(response.message)
-        }
-    }
+        );
 
+        const response = await updateCartItemQuantityDB(id, quantity);
+        if ('error' in response) {
+            toast.error(response.error);
+        } else {
+            toast.success(response.message);
+        }
+    };
     const onRemoveItem = async (id: string) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== id))
         const response = await removeCartItemDB(id)
@@ -69,9 +77,12 @@ export default function ShoppingCartDesc() {
                 {cartItems.length > 0 ? (
                     cartItems.map((item) => (
                         <div key={item.id} className="flex flex-row space-y-4 sm:flex-col sm:justify-between sm:items-center">
-                            <div className={"flex-row flex space-x-2"}>
-                                <Image src={item.product.image} alt={item.product.name} width={100} height={100} className={"rounded-[15px]"} />
-                                <div>
+                            <div className={"flex-row flex space-x-2 w-full"}>
+                                <div className={'h-[100px] w-[100px] relative'}>
+                                     <Image src={item.product.image} alt={item.product.name} fill={true} className={"rounded-[15px] object-cover"} />
+                                </div>
+
+                                <div className={"flex-1 flex-grow flex flex-col"}>
                                 <h3 className="text-lg font-semibold">{item.product.name}</h3>
                                 <p className="text-lg font-semibold">€{item.product.price.toFixed(2)}</p>
                                 </div>

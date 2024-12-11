@@ -9,9 +9,8 @@ export const getCartItems = async (): Promise<CartItem[] | {error: string} | nul
         return null;
     }
     const response = await getCartItemsDB(session.user);
-    if (!response) {
-        return ({error: 'An error occurred while fetching cart items'});
+     if (!response) {
+        return [];
     } else {
         return response;
-    }
-}
+    }}

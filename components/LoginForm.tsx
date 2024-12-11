@@ -38,12 +38,18 @@ export default function LoginForm() {
         event.preventDefault()
         try {
             const formData = new FormData(event.currentTarget)
-            const JSONFORM = JSON.stringify(Object.fromEntries(formData))
+            const validatedForm = signInSchema.parse(Object.fromEntries(formData))
+            console.log(validatedForm)
+            const JSONFORM = JSON.stringify(validatedForm)
             const encryptedFormData = await encrypt(JSONFORM)
             router.push(`/login?encryptedFormData=${encryptedFormData}`)
 
         } catch (err: unknown) {
-            setErrorMessage(err instanceof Error ? err.message : "An unknown error occurred")
+            if (err instanceof z.ZodError) {
+                setErrorMessage(err.errors[0].message)
+            } else {
+                setErrorMessage(err instanceof Error ? err.message : "An unknown error occurred")
+            }
         }
     }
 
