@@ -1,6 +1,6 @@
 import Credentials from "next-auth/providers/credentials";
 
-import type { NextAuthConfig} from "next-auth";
+import {NextAuthConfig} from "next-auth";
 import {signInSchema} from "@/lib/zod";
 import {getUserFromDb} from "@/utils/db";
 import bcrypt from "bcryptjs";
@@ -12,7 +12,6 @@ export default {
             async authorize(credentials) {
                 if (credentials === null) return null;
 
-                console.log("credentials", credentials);
                 try {
                     const parsedCredentials = signInSchema.parse(credentials);
 
@@ -24,18 +23,18 @@ export default {
                         if (isMatch) {
                             return user;
                         } else {
-                            throw new Error("Password is incorrect");
+                            return null;
                         }
                     } else {
-                        throw new Error("No user found");
+                         return null;
                     }
                 } catch (error: unknown) {
                     if (error instanceof ZodError) {
-                        throw new Error(error.errors[0].message);
+                        return null
                     } else if (error instanceof Error) {
-                        throw new Error(error.message);
+                        return null
                     } else {
-                        throw new Error("An unknown error occurred");
+                        return null
                     }
                 }
             }
