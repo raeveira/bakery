@@ -10,8 +10,10 @@ import { CartItem } from "@/lib/types/cartItem"
 import {updateCartItemQuantityDB} from "@/app/actions/updateCartItemQuantity";
 import {removeCartItemDB} from "@/app/actions/removeCartItem";
 import Image from "next/image";
+import { useRouter } from  "next/navigation";
 
 export default function ShoppingCartDesc() {
+    const router = useRouter()
     const [cartItems, setCartItems] = useState<CartItem[]>([])
 
     const updateCart = async () => {
@@ -63,6 +65,11 @@ export default function ShoppingCartDesc() {
 
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
     const totalPrice = cartItems.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+
+    const handleCheckout = () => {
+        router.push('/checkout')
+    }
+    const disableButton = cartItems.length === 0
 
     return (
         <div className="flex flex-col h-[calc(100vh-4rem)] overflow-y-auto">
@@ -136,7 +143,7 @@ export default function ShoppingCartDesc() {
                     <span className="text-xl font-bold">Total:</span>
                     <span className="text-xl font-bold">€{totalPrice.toFixed(2)}</span>
                 </div>
-                <Button className="w-full bg-black text-white hover:bg-gray-800">
+                <Button onClick={handleCheckout} disabled={disableButton} className="w-full bg-black text-white hover:bg-gray-800">
                     Checkout
                 </Button>
             </div>

@@ -100,6 +100,26 @@ export async function removeCartItem(id: string) {
     });
 }
 
+export async function clearCartItems(sessionUser: any) {
+    const user = await findUser(sessionUser.email);
+
+    if (!user) {
+        return null;
+    }
+
+    const cart = await prisma.cart.findUnique({
+        where: { userId: user.id }
+    });
+
+    if (!cart) {
+        return null;
+    }
+
+    return prisma.cartItem.deleteMany({
+        where: { cartId: cart.id }
+    });
+}
+
 export async function getCartItemsDB(sessionUser: any) {
     const user = await findUser(sessionUser.email);
 
