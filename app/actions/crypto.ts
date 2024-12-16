@@ -4,7 +4,7 @@ import 'dotenv/config'
 
 const algorithm = 'aes-256-cbc';
 
-const key = crypto.scryptSync(process.env.CRYPTO_KEY, 'salt', 32);
+const key = crypto.scryptSync(process.env.CRYPTO_KEY || '', 'salt', 32);
 const iv = crypto.randomBytes(16);
 
 /**
