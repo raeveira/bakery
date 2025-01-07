@@ -5,6 +5,7 @@ import {db} from "@/prisma/prismaClient"
 import {getRole} from "@/app/actions/getRole";
 
 export const {handlers, signIn, signOut, auth} = NextAuth({
+    trustHost: true,
     adapter: PrismaAdapter(db),
     session: {strategy: "jwt"},
     ...authConfig,
@@ -15,7 +16,9 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             }
 
             if (token.role) {
-                session.user.role = token.role;
+                if (token.role && (token.role === "user" || token.role === "admin")) {
+                    session.user.role = token.role;
+                }
             }
 
             return session;
@@ -29,5 +32,4 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             return token;
         },
     },
-    trustHost: true
 })
