@@ -166,5 +166,14 @@ export async function updateUser(oldEmail: string, name?: string, email?: string
     });
 }
 
+export async function getAllOrdersDB() {
+    return prisma.orders.findMany({
+        include: {
+            product: true,
+            Receipts: true,
+        }
+    });
+}
+
 export const db = prisma;
 
