@@ -100,6 +100,31 @@ export async function removeCartItem(id: string) {
     });
 }
 
+export async function getUserBalance(sessionUser: any) {
+    const user = await findUser(sessionUser.email);
+
+    if (!user) {
+        return null;
+    }
+
+    return prisma.balance.findUnique({
+        where: { userId: user.id }
+    })
+}
+
+export async function updateUserBalance(sessionUser: any, amount: number) {
+    const user = await findUser(sessionUser.email);
+
+    if (!user) {
+        return null;
+    }
+
+    return prisma.balance.update({
+        where: { userId: user.id },
+        data: { balance: { set: amount } }
+    });
+}
+
 export async function clearCartItems(sessionUser: any) {
     const user = await findUser(sessionUser.email);
 
@@ -146,8 +171,7 @@ export async function getCartItemsDB(sessionUser: any) {
 export async function updateUser(oldEmail: string, name?: string, email?: string, password?: string) {
     const dataContent: { updatedAt: Date, password?: string, name?: string, email?: string } = { updatedAt: new Date() };
     if (password) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        dataContent.password = hashedPassword;
+        dataContent.password = await bcrypt.hash(password, 10);
     }
     if (name) {
         dataContent.name = name;
@@ -163,6 +187,15 @@ export async function updateUser(oldEmail: string, name?: string, email?: string
     return prisma.users.update({
         where: { email: oldEmail },
         data: dataContent,
+    });
+}
+
+export async function getAllOrdersDB() {
+    return prisma.orders.findMany({
+        include: {
+            product: true,
+            Receipts: true,
+        }
     });
 }
 
